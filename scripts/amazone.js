@@ -1,5 +1,9 @@
-let productsHTML = "";
+import {products} from '../data/products.js';
+import {cart, saveToStorage} from '../data/cart.js';
+import {formatCurrency} from '../scripts/utils/money.js';
 
+let productsHTML = "";
+ 
 products.forEach((pro) => {
 
   productsHTML += `
@@ -22,7 +26,7 @@ products.forEach((pro) => {
           </div>
 
           <div class="product-price">
-            $${(pro.priceCents / 100).toFixed(2)}
+            $${formatCurrency(pro.priceCents)}
           </div>
 
           <div class="product-quantity-container">
@@ -58,16 +62,17 @@ products.forEach((pro) => {
 
 
 document.querySelectorAll(".js-add-cart").forEach((button) => {
+
   button.addEventListener("click", () => {
     let mathingItem;
     let cartQuantity = 0;
-
     function incrementCartQuantity() {
       cart.forEach((car) => {
         cartQuantity += car.quantity;
       });
       document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
     }
+
 
     cart.forEach((item) => {
       if (button.dataset.productId === item.productId) {
@@ -82,9 +87,11 @@ document.querySelectorAll(".js-add-cart").forEach((button) => {
       cart.push({
         productId: button.dataset.productId,
         quantity: 1,
+        deliveryOptionId: '1'
       });
 
       incrementCartQuantity();
+      saveToStorage();
     }
   });
 });
