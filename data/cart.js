@@ -1,5 +1,4 @@
-import '../data/cart-oop.js';
-
+ 
 export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 
